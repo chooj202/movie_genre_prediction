@@ -17,10 +17,10 @@ from sklearn.preprocessing import MultiLabelBinarizer
 # In[2]:
 
 
-def get_df():
+def get_df(your_folder_path):
     """get df and drop duplicates"""
 
-    folder_path = '/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/csv/'
+    folder_path = your_folder_path
     dataframes = []
     for file_name in os.listdir(folder_path):
         if file_name.endswith('.csv'):
