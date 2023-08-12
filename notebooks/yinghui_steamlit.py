@@ -31,17 +31,26 @@ with col1:
         # response = requests.get(api_url, params=image)
         # genre_result = response.json()
 
-    else:
-        st.text("Please upload an image file")
+    st.header("Your Sypnosis")
+    txt = st.text_area("Enter your sypnosis")
+    if txt is not None:
+        params = txt
+        st.write(txt)
+        # response = requests.get(api_url, params=image)
+        # genre_result = response.json()
 
 
 with col2:
     if uploaded_file is not None:
         st.header("The Movie Genre is...")
-        st.write(f"genre_result")
+        st.write(f"genre_result from image")
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
+    if txt is not None:
+        st.header("The Movie Genre is...")
+        st.write(f"genre_result from plot")
+        st.balloons()
 
 
 # st.markdown("""# This is a header
