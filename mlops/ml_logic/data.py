@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing import image
 from PIL import UnidentifiedImageError
 import ast
 
-from movie_genre_prediction.params import *
+from mlops.params import *
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     """

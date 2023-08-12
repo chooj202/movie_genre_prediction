@@ -6,7 +6,7 @@ from colorama import Fore, Style
 from tensorflow import keras
 from google.cloud import storage
 
-from movie_genre_prediction.params import *
+from mlops.params import *
 
 
 def save_results(params: dict, metrics: dict) -> None:

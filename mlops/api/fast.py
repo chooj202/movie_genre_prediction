@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # from movie_genre_prediction.interface.main import pred
 import uuid
 
-from movie_genre_prediction.params import *
+from mlops.params import *
 
 app = FastAPI()
 

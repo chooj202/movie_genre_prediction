@@ -6,11 +6,11 @@ from colorama import Fore, Style
 from dateutil.parser import parse
 from sklearn.model_selection import train_test_split
 
-from movie_genre_prediction.ml_logic.data import get_data_with_cache, clean_data, image_data, load_data_to_bq
-from movie_genre_prediction.ml_logic.preprocessor import binarize_genres
-from movie_genre_prediction.ml_logic.registry import load_model, save_results, save_model
-from movie_genre_prediction.ml_logic.model import initialize_model, compile_model, train_model
-from movie_genre_prediction.params import *
+from mlops.ml_logic.data import get_data_with_cache, clean_data, image_data, load_data_to_bq
+from mlops.ml_logic.preprocessor import binarize_genres
+from mlops.ml_logic.registry import load_model, save_results, save_model
+from mlops.ml_logic.model import initialize_model, compile_model, train_model
+from mlops.params import *
 
 def preprocess() -> pd.DataFrame:
     """
