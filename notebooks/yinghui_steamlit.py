@@ -33,7 +33,8 @@ with col1:
 
     st.header("Your Sypnosis")
     txt = st.text_area("Enter your sypnosis")
-    if txt is not None:
+    sypnosis_button = st.button("Run plot analysis")
+    if sypnosis_button:
         params = txt
         display_txt = st.write(txt)
         display_txt
@@ -48,7 +49,7 @@ with col2:
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
-    if display_txt is not None:
+    if sypnosis_button:
         st.header("The Movie Genre is...")
         st.write(f"genre_result from plot")
         st.balloons()
