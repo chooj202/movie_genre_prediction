@@ -40,8 +40,8 @@ with col2:
         st.header("The Movie Genre is...")
         st.write(f"genre_result")
         st.balloons()
-    else:
-        st.write("Please upload an image file")
+    # else:
+    #     st.write("Please upload an image file")
 
 
 # st.markdown("""# This is a header
