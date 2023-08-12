@@ -16,21 +16,20 @@ def load_image_model():
 model = load_image_model()
 
 st.markdown("""# Movie Genre Predictor
-## Something""")
+""")
 
 col1, col2 = st.columns(2)
 
 with col1:
+    st.header("Your Poster")
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
 
     else:
-        st.text("Please upload an image file (file type: jpg, png)")
+        st.text("Please upload an image file")
 
-    st.header("Your Poster")
-    st.image("https://static.streamlit.io/examples/cat.jpg")
 
 with col2:
    st.header("The Movie Genre is...")
