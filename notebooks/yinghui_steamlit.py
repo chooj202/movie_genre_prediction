@@ -28,8 +28,8 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        response = requests.get(api_url, params=image)
-        genre_result = response.json()
+        # response = requests.get(api_url, params=image)
+        # genre_result = response.json()
 
     else:
         st.text("Please upload an image file")
