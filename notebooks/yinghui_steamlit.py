@@ -36,9 +36,9 @@ with col1:
 
 
 with col2:
-    if genre_result is not None:
+    if uploaded_file is not None:
         st.header("The Movie Genre is...")
-        st.write(f"{genre_result}")
+        st.write(f"genre_result")
         st.balloons()
     else:
         st.write("Please upload an image file")
