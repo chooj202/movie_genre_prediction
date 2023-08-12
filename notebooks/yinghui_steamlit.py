@@ -36,9 +36,12 @@ with col1:
 
 
 with col2:
-   st.header("The Movie Genre is...")
-   st.write(f"{genre_result}")
-   st.balloons()
+    if genre_result is not None:
+        st.header("The Movie Genre is...")
+        st.write(f"{genre_result}")
+        st.balloons()
+    else:
+        st.write("Please upload an image file")
 
 
 # st.markdown("""# This is a header
