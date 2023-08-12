@@ -35,9 +35,8 @@ with col1:
     txt = st.text_area("Enter your sypnosis")
     sypnosis_button = st.button("Run plot analysis")
     if sypnosis_button:
-        params = txt
-        display_txt = st.write(txt)
-        display_txt
+        # params = txt
+        st.write(txt)
         # response = requests.get(api_url, params=image)
         # genre_result = response.json()
 
