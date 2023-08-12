@@ -5,29 +5,30 @@
 
 
 import streamlit as st
-
+import tensorflow as tf
+from PIL import Image
 import numpy as np
 import pandas as pd
 
+def load_image_model():
+    model = "some model"
+    return model
+
+model = load_image_model()
+
 st.markdown("""# Movie Genre Predictor
-## Somthing""")
+## Something""")
 
 col1, col2 = st.columns(2)
 
 with col1:
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
     if uploaded_file is not None:
-        # To read file as bytes:
-        bytes_data = uploaded_file.getvalue()
-        st.write(bytes_data)
+        image = Image.open(uploaded_file)
+        st.image(image)
 
-        # To convert to a string based IO:
-        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-        st.write(stringio)
-
-        # To read file as string:
-        string_data = stringio.read()
-        st.write(string_data)
+    else:
+        st.text("Please upload an image file (file type: jpg, png)")
 
     st.header("Your Poster")
     st.image("https://static.streamlit.io/examples/cat.jpg")
