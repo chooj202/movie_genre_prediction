@@ -6,8 +6,10 @@
 
 import streamlit as st
 from PIL import Image
-import numpy as np
-import pandas as pd
+import requests
+import json
+
+api_url = ""
 
 def load_image_model():
     model = "some model"
@@ -26,6 +28,8 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
+        response = requests.get(api_url, params=image)
+        genre_result = response.json()
 
     else:
         st.text("Please upload an image file")
@@ -33,7 +37,8 @@ with col1:
 
 with col2:
    st.header("The Movie Genre is...")
-   st.markdown('XXX and YYY')
+   st.write(f"{genre_result}")
+   st.balloons()
 
 
 # st.markdown("""# This is a header
