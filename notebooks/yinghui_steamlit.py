@@ -12,6 +12,31 @@ import pandas as pd
 st.markdown("""# Movie Genre Predictor
 ## Somthing""")
 
+col1, col2 = st.columns(2)
+
+with col1:
+    uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
+    if uploaded_file is not None:
+        # To read file as bytes:
+        bytes_data = uploaded_file.getvalue()
+        st.write(bytes_data)
+
+        # To convert to a string based IO:
+        stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
+        st.write(stringio)
+
+        # To read file as string:
+        string_data = stringio.read()
+        st.write(string_data)
+
+    st.header("Your Poster")
+    st.image("https://static.streamlit.io/examples/cat.jpg")
+
+with col2:
+   st.header("The Movie Genre is...")
+   st.markdown('XXX and YYY')
+
+
 # st.markdown("""# This is a header
 # ## This is a sub header
 # This is text""")
