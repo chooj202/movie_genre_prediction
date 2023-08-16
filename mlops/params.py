@@ -2,6 +2,8 @@ import os
 import numpy as np
 
 ##################  VARIABLES  ##################
+IMAGE_WIDTH = os.environ.get("IMAGE_WIDTH")
+IMAGE_HEIGHT = os.environ.get("IMAGE_HEIGHT")
 GCP_PROJECT = os.environ.get("GCP_PROJECT")
 BQ_DATASET = os.environ.get("BQ_DATASET")
 MODEL_NAME= os.environ.get("MODEL_NAME")
@@ -11,6 +13,7 @@ BUCKET_NAME = os.environ.get("BUCKET_NAME")
 MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI")
 MLFLOW_EXPERIMENT = os.environ.get("MLFLOW_EXPERIMENT")
 MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
+
 SAVEIMAGEDIR = os.environ.get("SAVEIMAGEDIR")
 
 ##################  CONSTANTS  #####################

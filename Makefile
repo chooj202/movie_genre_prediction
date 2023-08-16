@@ -13,5 +13,8 @@ run_preprocess:
 run_train:
 	python -c 'from mlops.interface.main import train; train()'
 
+run_pred:
+	python -c 'from mlops.interface.main import pred; pred()'
+
 run_api:
 	uvicorn mlops.api.fast:app --reload
