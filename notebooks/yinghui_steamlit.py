@@ -9,7 +9,7 @@ from PIL import Image
 import requests
 import json
 import pickle
-from transformers import AutoTokenizer
+from transformers import pipeline
 import numpy as np
 import torch
 
@@ -17,20 +17,32 @@ import torch
 
 
 
-#Preprocess Image
+##Preprocess Image
 def preprocess_image(image):
     image = image.resize((256, 256))
     image_np = np.array(image)
     return image_np
 
 
-#Load Models for NLP
-model_nlp = pickle.load(open('nlp.pkl','rb'))
+## Load Models for NLP
+# Load the pickled model
+with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
+    loaded_model = pickle.load(f)
 
-#Load Models for Image Detection
+# Load the pickled tokenizer
+with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/tokenizer.pkl', 'rb') as f:
+    loaded_tokenizer = pickle.load(f)
+
+text_classification = pipeline(
+    "text-classification",
+    model=loaded_model,
+    tokenizer=loaded_tokenizer
+)
+
+##Load Models for Image Detection
 model_image = pickle.load(open('image_reg.pkl','rb'))
 
-#Load Models for both
+##Load Models for both
 model_both = pickle.load(open('both.pkl','rb'))
 
 
@@ -63,31 +75,31 @@ with col1:
     if sypnosis_button:
         # params = txt
         st.write(txt)
+        result = text_classification(txt)
+        # #Preprocess NLP
+        # tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        # labels = ['Action',
+        #             'Adventure',
+        #             'Comedy',
+        #             'Crime',
+        #             'Fantasy',
+        #             'Horror',
+        #             'Mystery',
+        #             'Romance',
+        #             'Sci-Fi',
+        #             'Thriller']
+        # id2label = {idx:label for idx, label in enumerate(labels)}
 
-        #Preprocess NLP
-        tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        labels = ['Action',
-                    'Adventure',
-                    'Comedy',
-                    'Crime',
-                    'Fantasy',
-                    'Horror',
-                    'Mystery',
-                    'Romance',
-                    'Sci-Fi',
-                    'Thriller']
-        id2label = {idx:label for idx, label in enumerate(labels)}
-
-        encoding = tokenizer(txt, return_tensors="pt")
-        encoding = {k: v.to(model_nlp.model.device) for k,v in encoding.items()}
-        outputs = model_nlp.model(**encoding)
-        logits = outputs.logits
-        sigmoid = torch.nn.Sigmoid()
-        probs = sigmoid(logits.squeeze().cpu())
-        predictions = np.zeros(probs.shape)
-        predictions[np.where(probs >= 0.5)] = 1
-        # turn predicted id's into actual label names
-        predicted_labels = [id2label[idx] for idx, label in enumerate(predictions) if label == 1.0]
+        # encoding = tokenizer(txt, return_tensors="pt")
+        # encoding = {k: v.to(model_nlp.model.device) for k,v in encoding.items()}
+        # outputs = model_nlp.model(**encoding)
+        # logits = outputs.logits
+        # sigmoid = torch.nn.Sigmoid()
+        # probs = sigmoid(logits.squeeze().cpu())
+        # predictions = np.zeros(probs.shape)
+        # predictions[np.where(probs >= 0.5)] = 1
+        # # turn predicted id's into actual label names
+        # predicted_labels = [id2label[idx] for idx, label in enumerate(predictions) if label == 1.0]
 
         # response = requests.get(api_url, params=image)
         # genre_result = response.json()
@@ -103,7 +115,7 @@ with col2:
     #     st.write("Please upload an image file")
     if sypnosis_button:
         st.header("The Movie Genre is...")
-        st.write(f"{predicted_labels}")
+        st.write(f"{result}")
         # st.code(model_nlp.predict(clean_txt))
         st.write(f"genre_result from plot")
         st.balloons()
