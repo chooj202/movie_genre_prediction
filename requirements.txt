@@ -18,6 +18,7 @@ google-cloud-storage
 db-dtypes
 # pyarrow
 tqdm
+transformers
 regex
 
 # Trick to install the version of Tensorflow depending on your processor: darwin == Mac, ARM == M1
