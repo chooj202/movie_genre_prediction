@@ -14,8 +14,8 @@ SAVEIMAGEDIR = os.environ.get("SAVEIMAGEDIR")
 
 ##################  CONSTANTS  #####################
 GENRE_NAMES = ["action", "adventure", "animation", "biography", "comedy", "crime", "drama", "family", "fantasy", "film-noir", "history", "horror", "music", "musical", "mystery", "romance", "scifi", "sport", "thriller", "war", "western"]
-LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "movie_genre_prediction", "data")
-LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "movie_genre_prediction", "training_outputs")
+LOCAL_DATA_PATH = "data"
+LOCAL_REGISTRY_PATH =  "training_outputs"
 
 
 env_valid_options = dict(
