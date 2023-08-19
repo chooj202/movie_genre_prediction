@@ -15,11 +15,11 @@ import numpy as np
 
 
 
-# Load Models for NLP
-with open('/home/yinghui/code/yinghuing/movie-genre-predictor/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
-    loaded_model = pickle.load(f)
-with open('/home/yinghui/code/yinghuing/movie-genre-predictor/movie_genre_prediction/raw_data/tokenizer.pkl', 'rb') as f:
-    loaded_tokenizer = pickle.load(f)
+# # Load Models for NLP
+# with open('/home/yinghui/code/yinghuing/movie-genre-predictor/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
+#     loaded_model = pickle.load(f)
+# with open('/home/yinghui/code/yinghuing/movie-genre-predictor/movie_genre_prediction/raw_data/tokenizer.pkl', 'rb') as f:
+#     loaded_tokenizer = pickle.load(f)
 
 # text_classification = pipeline(
 #     "text-classification",
