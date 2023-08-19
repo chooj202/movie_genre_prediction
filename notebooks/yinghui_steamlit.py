@@ -13,7 +13,7 @@ from transformers import pipeline
 import numpy as np
 
 
-api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
+api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/s"
 
 # def load_image_model():
 #     model = "some model"
@@ -32,7 +32,7 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        response = requests.get(api_url_image, params=image)
+        response = requests.post(api_url_image, data=image)
         genre_result = response.json()["prediction"]
 
     st.header("Your Sypnosis")
