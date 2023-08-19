@@ -8,14 +8,39 @@ import streamlit as st
 from PIL import Image
 import requests
 import json
+import pickle
+from transformers import AutoTokenizer
+import numpy as np
+import torch
+
+
+
+
+
+#Preprocess Image
+def preprocess_image(image):
+    image = image.resize((256, 256))
+    image_np = np.array(image)
+    return image_np
+
+
+#Load Models for NLP
+model_nlp = pickle.load(open('nlp.pkl','rb'))
+
+#Load Models for Image Detection
+model_image = pickle.load(open('image_reg.pkl','rb'))
+
+#Load Models for both
+model_both = pickle.load(open('both.pkl','rb'))
+
 
 api_url = ""
 
-def load_image_model():
-    model = "some model"
-    return model
+# def load_image_model():
+#     model = "some model"
+#     return model
 
-model = load_image_model()
+# model = load_image_model()
 
 st.markdown("""# Movie Genre Predictor
 """)
@@ -28,6 +53,7 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
+        processed_uploaded_file = preprocess_image(image)
         # response = requests.get(api_url, params=image)
         # genre_result = response.json()
 
@@ -37,6 +63,32 @@ with col1:
     if sypnosis_button:
         # params = txt
         st.write(txt)
+
+        #Preprocess NLP
+        tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        labels = ['Action',
+                    'Adventure',
+                    'Comedy',
+                    'Crime',
+                    'Fantasy',
+                    'Horror',
+                    'Mystery',
+                    'Romance',
+                    'Sci-Fi',
+                    'Thriller']
+        id2label = {idx:label for idx, label in enumerate(labels)}
+
+        encoding = tokenizer(txt, return_tensors="pt")
+        encoding = {k: v.to(model_nlp.model.device) for k,v in encoding.items()}
+        outputs = model_nlp.model(**encoding)
+        logits = outputs.logits
+        sigmoid = torch.nn.Sigmoid()
+        probs = sigmoid(logits.squeeze().cpu())
+        predictions = np.zeros(probs.shape)
+        predictions[np.where(probs >= 0.5)] = 1
+        # turn predicted id's into actual label names
+        predicted_labels = [id2label[idx] for idx, label in enumerate(predictions) if label == 1.0]
+
         # response = requests.get(api_url, params=image)
         # genre_result = response.json()
 
@@ -44,31 +96,14 @@ with col1:
 with col2:
     if uploaded_file is not None:
         st.header("The Movie Genre is...")
+        st.code(model_image.predict(processed_uploaded_file))
         st.write(f"genre_result from image")
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
     if sypnosis_button:
         st.header("The Movie Genre is...")
+        st.write(f"{predicted_labels}")
+        # st.code(model_nlp.predict(clean_txt))
         st.write(f"genre_result from plot")
         st.balloons()
-
-
-# st.markdown("""# This is a header
-# ## This is a sub header
-# This is text""")
-
-# df = pd.DataFrame({
-#     'first column': list(range(1, 11)),
-#     'second column': np.arange(10, 101, 10)
-# })
-
-# # this slider allows the user to select a number of lines
-# # to display in the dataframe
-# # the selected value is returned by st.slider
-# line_count = st.slider('Select a line count', 1, 10, 3)
-
-# # and used to select the displayed lines
-# head_df = df.head(line_count)
-
-# head_df
