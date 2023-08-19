@@ -11,6 +11,7 @@ import json
 import pickle
 from transformers import pipeline
 import numpy as np
+import base64
 
 
 api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
@@ -32,7 +33,7 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        files = {'my_file': open(image, 'rb')}
+        files = {'file': ('image.jpg', open(image, 'rb'))}
         response = requests.post(api_url_image, files=files)
         genre_result = response.json()["prediction"]
 
