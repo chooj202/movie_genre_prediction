@@ -16,10 +16,6 @@ import numpy as np
 
 
 
-
-
-
-
 # Load Models for NLP
 with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)
