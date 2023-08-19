@@ -1,12 +1,14 @@
 import pandas as pd
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from mlops.interface.main import pred
+from mlops.ml_logic.registry import load_model
+from mlops.interface.main import fast_pred
 import uuid
 
 from mlops.params import *
 
 app = FastAPI()
+model = load_model()
 
 # Allowing all middleware is optional, but good practice for dev purposes
 app.add_middleware(
@@ -27,7 +29,7 @@ async def create_upload_file(file: UploadFile = File(...)):
     with open(f"{SAVEIMAGEDIR}{file.filename}", "wb") as f:
         f.write(contents)
 
-    prediction = pred(f"{SAVEIMAGEDIR}{file.filename}")
+    prediction = fast_pred(model, f"{SAVEIMAGEDIR}{file.filename}")
 
     return {"filename": file.filename, "prediction": ",".join(prediction)}
 

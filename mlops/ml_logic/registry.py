@@ -7,6 +7,7 @@ from tensorflow import keras
 from google.cloud import storage
 
 from mlops.params import *
+import logging
 
 
 def save_results(params: dict, metrics: dict) -> None:
@@ -87,22 +88,24 @@ def load_model(stage="Production") -> keras.Model:
         return latest_model
 
     elif MODEL_TARGET == "gcs":
-        print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
+        print(Fore.BLUE + f"\nHello Load latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
         blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
-
+        print('We reached here')
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
             latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
+            logging.info(f"path exists {os.path.exists(latest_model_path_to_save)}")
             latest_blob.download_to_filename(latest_model_path_to_save)
-
+            logging.info(f"file exists {os.path.isfile(latest_model_path_to_save)}")
             latest_model = keras.models.load_model(latest_model_path_to_save)
 
             print("✅ Latest model downloaded from cloud storage")
 
             return latest_model
-        except:
+        except Exception as e:
+            print(e)
             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
 
             return None

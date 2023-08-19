@@ -10,10 +10,6 @@ MODEL_NAME= os.environ.get("MODEL_NAME")
 DATA_SIZE = os.environ.get("DATA_SIZE")
 MODEL_TARGET = os.environ.get("MODEL_TARGET")
 BUCKET_NAME = os.environ.get("BUCKET_NAME")
-MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI")
-MLFLOW_EXPERIMENT = os.environ.get("MLFLOW_EXPERIMENT")
-MLFLOW_MODEL_NAME = os.environ.get("MLFLOW_MODEL_NAME")
-
 SAVEIMAGEDIR = os.environ.get("SAVEIMAGEDIR")
 
 ##################  CONSTANTS  #####################
