@@ -11,16 +11,11 @@ import json
 import pickle
 from transformers import pipeline
 import numpy as np
-import base64
+import io
 
 
 api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
 
-# def load_image_model():
-#     model = "some model"
-#     return model
-
-# model = load_image_model()
 
 st.markdown("""# Movie Genre Predictor
 """)
