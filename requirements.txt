@@ -18,6 +18,7 @@ google-cloud-storage
 db-dtypes
 # pyarrow
 tqdm
+huggingface_hub
 transformers
 regex
 
