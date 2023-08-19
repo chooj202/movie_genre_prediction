@@ -32,7 +32,7 @@ with col1:
         files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
         response = requests.post(api_url_image, files=files)
 
-        genre_result = response.json()["prediction"]
+        genre_result = response.json()
 
     st.header("Your Sypnosis")
     txt = st.text_area("Enter your sypnosis")
