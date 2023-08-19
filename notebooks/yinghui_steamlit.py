@@ -14,7 +14,7 @@ import numpy as np
 import io
 
 
-api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
+api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/create_upload_file"
 
 
 st.markdown("""# Movie Genre Predictor
