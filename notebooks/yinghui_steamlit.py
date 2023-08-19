@@ -107,3 +107,8 @@ with col2:
         # st.code(model_nlp.predict(clean_txt))
         st.write(f"genre_result from plot")
         st.balloons()
+
+    if uploaded_file is not None and sypnosis_button:
+        st.header("The Movie Genre is...")
+        st.write(f"both")
+        st.snow()
