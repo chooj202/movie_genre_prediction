@@ -32,7 +32,8 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        response = requests.post(api_url_image, data=image)
+        files = {'my_file': open(image, 'rb')}
+        response = requests.post(api_url_image, files=files)
         genre_result = response.json()["prediction"]
 
     st.header("Your Sypnosis")
