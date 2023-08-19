@@ -33,8 +33,14 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        files = {'file': ('image.jpg', open(image, 'rb'))}
+        files = {'file': ("image.jpg", io.BytesIO(image), "image/jpeg")}
         response = requests.post(api_url_image, files=files)
+        if response.status_code == 200:
+            st.success("Image uploaded and API request successful!")
+        else:
+            st.error("Image upload or API request failed.")
+            st.text("Status code:", response.status_code)
+            st.text("Response content:", response.text)
         genre_result = response.json()["prediction"]
 
     st.header("Your Sypnosis")
