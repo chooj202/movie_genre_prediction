@@ -9,7 +9,7 @@ from PIL import Image
 import requests
 import json
 import pickle
-# from transformers import pipeline
+from transformers import pipeline
 import numpy as np
 
 
