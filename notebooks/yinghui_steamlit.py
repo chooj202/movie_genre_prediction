@@ -9,7 +9,7 @@ from PIL import Image
 import requests
 import json
 import pickle
-from transformers import pipeline
+# from transformers import pipeline
 import numpy as np
 import torch
 
@@ -17,32 +17,33 @@ import torch
 
 
 
-##Preprocess Image
+
+
+
+# Load Models for NLP
+with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
+    loaded_model = pickle.load(f)
+with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/tokenizer.pkl', 'rb') as f:
+    loaded_tokenizer = pickle.load(f)
+
+# text_classification = pipeline(
+#     "text-classification",
+#     model=loaded_model,
+#     tokenizer=loaded_tokenizer
+# )
+
+
+
+#Load Models for Image Detection
+model_image = pickle.load(open('image_reg.pkl','rb'))
+
+#Preprocess Image
 def preprocess_image(image):
     image = image.resize((256, 256))
     image_np = np.array(image)
     return image_np
 
-
-## Load Models for NLP
-# Load the pickled model
-with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/trained_model.pkl', 'rb') as f:
-    loaded_model = pickle.load(f)
-
-# Load the pickled tokenizer
-with open('/home/yinghui/code/chooj202/movie_genre_prediction/movie_genre_prediction/raw_data/tokenizer.pkl', 'rb') as f:
-    loaded_tokenizer = pickle.load(f)
-
-text_classification = pipeline(
-    "text-classification",
-    model=loaded_model,
-    tokenizer=loaded_tokenizer
-)
-
-##Load Models for Image Detection
-model_image = pickle.load(open('image_reg.pkl','rb'))
-
-##Load Models for both
+#Load Models for both
 model_both = pickle.load(open('both.pkl','rb'))
 
 
@@ -75,7 +76,8 @@ with col1:
     if sypnosis_button:
         # params = txt
         st.write(txt)
-        result = text_classification(txt)
+        # result = text_classification(txt)
+
         # #Preprocess NLP
         # tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
         # labels = ['Action',
@@ -115,7 +117,7 @@ with col2:
     #     st.write("Please upload an image file")
     if sypnosis_button:
         st.header("The Movie Genre is...")
-        st.write(f"{result}")
+        # st.write(f"{result}")
         # st.code(model_nlp.predict(clean_txt))
         st.write(f"genre_result from plot")
         st.balloons()
