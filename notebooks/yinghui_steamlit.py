@@ -28,7 +28,8 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        files = {'file': ("image.jpg", io.BytesIO(image), "image/jpeg")}
+        image_data = uploaded_file.read()
+        files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
         response = requests.post(api_url_image, files=files)
         if response.status_code == 200:
             st.success("Image uploaded and API request successful!")
