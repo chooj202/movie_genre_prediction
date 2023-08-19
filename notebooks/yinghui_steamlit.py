@@ -13,7 +13,7 @@ from transformers import pipeline
 import numpy as np
 
 
-api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/s"
+api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
 
 # def load_image_model():
 #     model = "some model"
