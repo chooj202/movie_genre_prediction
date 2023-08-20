@@ -8,14 +8,14 @@ import streamlit as st
 from PIL import Image
 import requests
 import json
+import pickle
+from transformers import pipeline
+import numpy as np
+import io
 
-api_url = ""
 
-def load_image_model():
-    model = "some model"
-    return model
+api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
 
-model = load_image_model()
 
 st.markdown("""# Movie Genre Predictor
 """)
@@ -28,7 +28,10 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        # response = requests.get(api_url, params=image)
+        image_data = uploaded_file.getvalue()
+        files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
+        response = requests.post(api_url_image, files=files)
+        print(response.content)
         # genre_result = response.json()
 
     st.header("Your Sypnosis")
@@ -37,14 +40,12 @@ with col1:
     if sypnosis_button:
         # params = txt
         st.write(txt)
-        # response = requests.get(api_url, params=image)
-        # genre_result = response.json()
 
 
 with col2:
     if uploaded_file is not None:
         st.header("The Movie Genre is...")
-        st.write(f"genre_result from image")
+        st.write(f"{response.content}")
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
@@ -53,22 +54,7 @@ with col2:
         st.write(f"genre_result from plot")
         st.balloons()
 
-
-# st.markdown("""# This is a header
-# ## This is a sub header
-# This is text""")
-
-# df = pd.DataFrame({
-#     'first column': list(range(1, 11)),
-#     'second column': np.arange(10, 101, 10)
-# })
-
-# # this slider allows the user to select a number of lines
-# # to display in the dataframe
-# # the selected value is returned by st.slider
-# line_count = st.slider('Select a line count', 1, 10, 3)
-
-# # and used to select the displayed lines
-# head_df = df.head(line_count)
-
-# head_df
+    if uploaded_file is not None and sypnosis_button:
+        st.header("The Movie Genre is...")
+        st.write(f"both")
+        st.snow()
