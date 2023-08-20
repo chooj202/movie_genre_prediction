@@ -1,6 +1,7 @@
 ML_DIR_DATA=/data
 ML_DIR_TRAINING=/training_outputs
 
+## Basic setup
 reinstall_package:
 	@pip uninstall -y movie_genre_prediction || :
 	@pip install -e .
@@ -13,6 +14,7 @@ local_data_paths:
 	mkdir -p /training_outputs/metrics
 	mkdir -p /training_outputs/models
 
+## ML processes
 run_preprocess:
 	python -c 'from mlops.interface.main import preprocess; preprocess()'
 
@@ -25,12 +27,12 @@ run_pred:
 run_api:
 	uvicorn mlops.api.fast:app --reload
 
+
+## for all other users
 run_local_dev_api:
 	docker build --tag=${GCR_IMAGE}:dev .
 	docker run -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/gcp_credentials.json -e PORT=8000 -v ${GOOGLE_APPLICATION_CREDENTIALS}:/tmp/keys/gcp_credentials.json:ro -p 8000:8000 --env-file .env ${GCR_IMAGE}:dev
 
-
-## for all other users
 run_local_prod_api:
 	docker build -t ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:prod .
 	docker run -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/keys/gcp_credentials.json -e PORT=8000 -v ${GOOGLE_APPLICATION_CREDENTIALS}:/tmp/keys/gcp_credentials.json:ro -p 8000:8000 --env-file .env ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:prod
@@ -48,3 +50,8 @@ push_intel_api_from_m1:
 
 deploy_intel_api_from_m1:
 	gcloud run deploy --image ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:intel --memory ${GCR_MEMORY} --region ${GCP_REGION} --env-vars-file .env.yaml
+
+
+## streamlit
+streamlit:
+	-@streamlit run yinghui_streamlit.py

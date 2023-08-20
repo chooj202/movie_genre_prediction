@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 notebook
 # wheel
 # nbresult
@@ -24,13 +23,4 @@ db-dtypes
 # pyarrow
 tqdm
 regex
-=======
-numpy
-pandas
-scipy
-scikit-learn
 streamlit
-transformers
->>>>>>> master
-
-
