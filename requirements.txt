@@ -1,8 +1,26 @@
-numpy
-pandas
-scipy
-scikit-learn
-streamlit
+notebook
+# wheel
+# nbresult
+colorama
+# ipdb
+# ipykernel
+# yapf
+matplotlib
+# pygeohash
+# pytest
+seaborn
+datasets
 transformers
-
-
+numpy==1.23.5
+pandas==1.5.3
+scipy==1.10.0
+scikit-learn==1.2.1
+scikit-multilearn
+torch
+google-cloud-bigquery==3.11.4
+google-cloud-storage==2.10.0
+db-dtypes
+# pyarrow
+tqdm
+regex
+streamlit

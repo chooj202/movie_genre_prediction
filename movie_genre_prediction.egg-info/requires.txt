@@ -2,29 +2,17 @@ notebook
 colorama
 matplotlib
 seaborn
+datasets
+transformers
 numpy==1.23.5
 pandas==1.5.3
 scipy==1.10.0
 scikit-learn==1.2.1
-google-cloud-bigquery
-google-cloud-storage
+scikit-multilearn
+torch
+google-cloud-bigquery==3.11.4
+google-cloud-storage==2.10.0
 db-dtypes
 tqdm
 regex
-mlflow==2.1.1
-fastapi
-pytz
-uvicorn
-uuid
-python-multipart
-httpx
-pytest-asyncio
-
-[:sys_platform != "darwin"]
-tensorflow==2.10.0
-
-[:sys_platform == "darwin" and "ARM" in platform_version]
-tensorflow-macos==2.10.0
-
-[:sys_platform == "darwin" and "ARM" not in platform_version]
-tensorflow==2.10.0
+streamlit

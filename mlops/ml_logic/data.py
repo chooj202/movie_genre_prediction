@@ -32,18 +32,16 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def image_data(df: pd.DataFrame) -> pd.DataFrame:
-    # resize all images to 350x350
+    # resize all images to IMAGE_WIDTH, IMAGE_HEIGHT
     # convert images to arrays (ignore corrupted images)
-    width, height = 350, 350
+    width, height = int(IMAGE_WIDTH), int(IMAGE_HEIGHT)
     image_array = []
     unidentified_count = 0
     not_found_count = 0
     for i in tqdm(range(df.shape[0])):
         try:
             image_path = f"raw_data/posters/all/{df['imdb_id'][i]}.jpg"
-            img = image.load_img(image_path, target_size=(width, height, 3))
-            input_arr = image.img_to_array(img)
-            input_arr = input_arr/255.0
+            input_arr = image_preprocessing(image_path, width, height)
             image_array.append([df['imdb_id'][i], input_arr])
         except UnidentifiedImageError as e1:
             unidentified_count += 1
@@ -61,6 +59,17 @@ def image_data(df: pd.DataFrame) -> pd.DataFrame:
     raw_genre_img_df["image_array"] = raw_genre_img_df["image_array"].apply(np.ravel)
     print(raw_genre_img_df["image_array"][0].shape)
     return raw_genre_img_df
+
+def image_preprocessing(image_file_path: str) -> np.ndarray:
+    """
+    Convert a image (from its file path) to a numpy array
+    Size of the np array will be a 1d array with length = width x height
+    """
+    width, height = int(IMAGE_WIDTH), int(IMAGE_HEIGHT)
+    img = image.load_img(image_file_path, target_size=(width, height, 3))
+    image_arr = image.img_to_array(img)
+    image_arr = image_arr/255.0
+    return image_arr
 
 def get_data_with_cache(
         gcp_project:str,

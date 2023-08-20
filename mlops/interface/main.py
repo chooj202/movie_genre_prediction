@@ -3,14 +3,15 @@ import pandas as pd
 
 from pathlib import Path
 from colorama import Fore, Style
-from dateutil.parser import parse
 from sklearn.model_selection import train_test_split
 
-from mlops.ml_logic.data import get_data_with_cache, clean_data, image_data, load_data_to_bq
+from mlops.ml_logic.data import image_preprocessing, get_data_with_cache, clean_data, image_data, load_data_to_bq
 from mlops.ml_logic.preprocessor import binarize_genres
 from mlops.ml_logic.registry import load_model, save_results, save_model
 from mlops.ml_logic.model import initialize_model, compile_model, train_model
 from mlops.params import *
+
+from tensorflow import keras
 
 def preprocess() -> pd.DataFrame:
     """
@@ -123,3 +124,63 @@ def train(
     print("✅ train() done \n")
 
     return accuracy
+
+def pred(file_path: str = None) -> np.ndarray:
+    """
+    Make a prediction using the latest trained model
+    Takes in the path of the image as an input (because we will download all the images sent to the API)
+    """
+
+    print(Fore.MAGENTA + "\n⭐️ Use case: predict" + Style.RESET_ALL)
+    if file_path is None:
+        print(Fore.BLUE + "\nWoops, you didn't input a file path... Let me use a default file path" + Style.RESET_ALL)
+        file_path = f"{SAVEIMAGEDIR}sample.jpg"
+
+    print(Fore.BLUE + "\nProcessing image. . ." + Style.RESET_ALL)
+    X_pred = image_preprocessing(file_path).reshape(1, int(IMAGE_WIDTH), int(IMAGE_HEIGHT),3)
+
+    print(Fore.BLUE + "\nDone processing! Now loading model!" + Style.RESET_ALL)
+    model = load_model()
+    assert model is not None
+
+    print(Fore.BLUE + "\nPredicting . . . " + Style.RESET_ALL)
+    y_pred = model.predict(X_pred)
+    classes = np.array(GENRE_NAMES)
+    top3 = np.argsort(y_pred[0])[:-4:-1]
+    prediction = classes[top3[0:4]]
+
+    print(f"\n✅ prediction done for {file_path}:")
+    print(Fore.BLUE + f"\nThe model predicts {prediction}" +  Style.RESET_ALL)
+
+    return prediction
+
+def fast_pred(model: keras.Model, file_path: str) -> np.ndarray:
+    """
+    Pred but takes a model as input (We could pre-load the model and just call fast_prec)
+    Takes in the path of the image as an input (because we will download all the images sent to the API)
+    """
+
+    print(Fore.MAGENTA + "\n⭐️ Use case: fast predict!!!" + Style.RESET_ALL)
+    if file_path is None:
+        print(Fore.BLUE + "\nWoops, you didn't input a file path... Let me use a default file path" + Style.RESET_ALL)
+        file_path = f"{SAVEIMAGEDIR}sample.jpg"
+
+    print(Fore.BLUE + "\nProcessing image. . ." + Style.RESET_ALL)
+    X_pred = image_preprocessing(file_path).reshape(1, int(IMAGE_WIDTH), int(IMAGE_HEIGHT),3)
+    assert model is not None
+
+    print(Fore.BLUE + "\nPredicting . . . " + Style.RESET_ALL)
+    y_pred = model.predict(X_pred)
+    classes = np.array(GENRE_NAMES)
+    top3 = np.argsort(y_pred[0])[:-4:-1]
+    prediction = classes[top3[0:4]]
+
+    print(f"\n✅ prediction done for {file_path}:")
+    print(Fore.BLUE + f"\nThe model predicts {prediction}" +  Style.RESET_ALL)
+
+    return prediction
+
+if __name__ == '__main__':
+    preprocess()
+    train()
+    pred()
