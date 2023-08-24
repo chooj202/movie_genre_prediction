@@ -51,7 +51,7 @@ with col2:
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
-    if txt is not None and sypnosis_button and uploaded_file is None:
+    if txt is not None and sypnosis_button:
         st.header("The Movie Genre is...")
         st.write(f"genre_result from plot")
         st.balloons()
