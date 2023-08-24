@@ -28,11 +28,10 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        image_data = uploaded_file.read()
+        image_data = uploaded_file.getvalue()
         files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
         response = requests.post(api_url_image, files=files)
-        print(response.content)
-        # genre_result = response.json()
+        genre_result = response.json()["prediction"]
 
     st.header("Your Sypnosis")
     txt = st.text_area("Enter your sypnosis")
@@ -45,7 +44,7 @@ with col1:
 with col2:
     if uploaded_file is not None:
         st.header("The Movie Genre is...")
-        st.write(f"{response.content}")
+        st.write(f"{genre_result}")
         st.balloons()
     # else:
     #     st.write("Please upload an image file")
