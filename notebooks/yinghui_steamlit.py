@@ -36,10 +36,12 @@ with col1:
 
     st.header("Your Sypnosis")
     txt = st.text_area("Enter your sypnosis")
-    sypnosis_button = st.button("Run analysis")
+    sypnosis_button = st.button("Run plot analysis")
     if sypnosis_button:
         # params = txt
         st.write(txt)
+
+    both_button = st.button("Run analysis for both")
 
 
 with col2:
@@ -54,7 +56,7 @@ with col2:
         st.write(f"genre_result from plot")
         st.balloons()
 
-    if uploaded_file is not None and txt is not None and sypnosis_button :
+    if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
         st.write(f"both")
         st.snow()
