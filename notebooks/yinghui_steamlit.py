@@ -27,7 +27,6 @@ with col1:
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
     poster_button = st.button("Run poster analysis")
     if uploaded_file is not None:
-        poster_button = st.button("Run poster analysis")
         image = Image.open(uploaded_file)
         st.image(image)
         image_data = uploaded_file.getvalue()
