@@ -23,7 +23,7 @@ st.markdown("""# Movie Genre Predictor :movie_camera:
 col1, col2 = st.columns(2)
 
 with col1:
-    st.header("Your Poster")
+    st.header("Your Poster :camera:")
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
     poster_button = st.button("Run poster analysis")
     if uploaded_file is not None:
@@ -34,7 +34,7 @@ with col1:
         response = requests.post(api_url_image, files=files)
         genre_result = response.json()["prediction"]
 
-    st.header("Your Sypnosis")
+    st.header("Your Sypnosis :scroll:")
     txt = st.text_area("Enter your sypnosis")
     sypnosis_button = st.button("Run plot analysis")
     if sypnosis_button:
