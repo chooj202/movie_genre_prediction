@@ -35,7 +35,7 @@ with col1:
 
     st.header("Your Sypnosis")
     txt = st.text_area("Enter your sypnosis")
-    sypnosis_button = st.button("Run plot analysis")
+    sypnosis_button = st.button("Run analysis")
     if sypnosis_button:
         # params = txt
         st.write(txt)
