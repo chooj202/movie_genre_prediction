@@ -25,7 +25,9 @@ col1, col2 = st.columns(2)
 with col1:
     st.header("Your Poster")
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
+    poster_button = st.button("Run poster analysis")
     if uploaded_file is not None:
+        poster_button = st.button("Run poster analysis")
         image = Image.open(uploaded_file)
         st.image(image)
         image_data = uploaded_file.getvalue()
@@ -42,7 +44,7 @@ with col1:
 
 
 with col2:
-    if uploaded_file is not None and txt is None:
+    if uploaded_file is not None and poster_button:
         st.header("The Movie Genre is...")
         st.write(f"{genre_result}")
         st.balloons()
