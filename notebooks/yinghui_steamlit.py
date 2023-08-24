@@ -17,7 +17,7 @@ import io
 api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
 
 
-st.markdown("""# Movie Genre Predictor
+st.markdown("""# Movie Genre Predictor :movie_camera:
 """)
 
 col1, col2 = st.columns(2)
@@ -59,4 +59,4 @@ with col2:
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
         st.write(f"both")
-        st.snow()
+        st.balloons()
