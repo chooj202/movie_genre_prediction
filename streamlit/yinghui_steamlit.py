@@ -59,4 +59,4 @@ with col2:
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
         st.write(f"both")
-        st.balloons()
+        st.snow()
