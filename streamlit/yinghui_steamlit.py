@@ -29,10 +29,10 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        image_data = uploaded_file.getvalue()
-        files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
-        response = requests.post(api_url_image, files=files)
-        genre_result = response.json()["prediction"]
+        # image_data = uploaded_file.getvalue()
+        # files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
+        # response = requests.post(api_url_image, files=files)
+        # genre_result = response.json()["prediction"]
 
     st.header("Your Sypnosis :scroll:")
     txt = st.text_area("Enter your sypnosis")
