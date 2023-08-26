@@ -6,6 +6,8 @@ from google.cloud import bigquery
 
 from tqdm import tqdm
 from tensorflow.keras.preprocessing import image
+from sklearn.preprocessing import MultiLabelBinarizer
+from transformers import AutoTokenizer
 from PIL import UnidentifiedImageError
 import ast
 
@@ -60,6 +62,34 @@ def image_data(df: pd.DataFrame) -> pd.DataFrame:
     print(raw_genre_img_df["image_array"][0].shape)
     return raw_genre_img_df
 
+
+def get_image_array_multimodal(df):
+    width, height = 256, 256
+    image_array = []
+    unidentified_count = 0
+    not_found_count = 0
+    print(f"total: {df.shape[0]}")
+    for i in tqdm(range(df.shape[0])):
+        try:
+            folder = df["location"][i]
+            image_path = f"raw_data/large_dataset/{folder}/{df['imdb_id'][i]}.jpg"
+            img = image.load_img(image_path, target_size=(width, height, 3))
+            input_arr = np.asarray(image.img_to_array(img))
+            image_array.append([df['imdb_id'][i], input_arr])
+        except UnidentifiedImageError as e1:
+            unidentified_count += 1
+            pass
+        except FileNotFoundError as e2:
+            not_found_count += 1
+            pass
+    print(f"{unidentified_count} files were unidentified\n{not_found_count} files were not found")
+    print(f"we got {len(image_array)}")
+    img_array_df = pd.DataFrame(image_array, columns=["imdb_id", "image_array"])
+    df = df.merge(img_array_df, on="imdb_id", how="right").drop(columns=["location"])
+    df = df.dropna().reset_index(drop=True)
+    return df
+
+
 def image_preprocessing(image_file_path: str) -> np.ndarray:
     """
     Convert a image (from its file path) to a numpy array
@@ -70,6 +100,35 @@ def image_preprocessing(image_file_path: str) -> np.ndarray:
     image_arr = image.img_to_array(img)
     image_arr = image_arr/255.0
     return image_arr
+
+
+def preprocess_genre_multimodal(df) -> (pd.DataFrame, np.array):
+    df["genre"] = (
+        df["genre"]
+        .apply(eval)
+        .apply(lambda x: [genre.strip() for genre in x])
+        )
+    multilabel_binarizer = MultiLabelBinarizer()
+    multilabel_binarizer.fit(df['genre'])
+
+    #transform target variable
+    y = multilabel_binarizer.transform(df['genre'])
+    genre_names = multilabel_binarizer.classes_
+
+    # Adding
+    for i in range(len(genre_names)):
+        df[f"{genre_names[i]}"] = y[:,i]
+
+    return (df, y)
+
+
+
+def tokenize_encode_multimodal(df):
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+    text = df['plot'].to_list()
+    encodings = tokenizer(text, truncation = True, padding = True, max_length = 128, return_tensors = "np")
+    return encodings
+
 
 def get_data_with_cache(
         gcp_project:str,

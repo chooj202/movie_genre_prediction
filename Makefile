@@ -28,6 +28,11 @@ run_api:
 	uvicorn mlops.api.fast:app --reload
 
 
+## ML preprocess multimodal
+run_multimodal:
+		python -c 'from mlops.interface.main import multimodal; multimodal()'
+
+
 ## for all other users
 run_local_dev_api:
 	docker build --tag=${GCR_IMAGE}:dev .
