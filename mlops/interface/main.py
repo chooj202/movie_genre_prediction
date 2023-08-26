@@ -125,6 +125,7 @@ def train(
 
     return accuracy
 
+
 def pred(file_path: str = None) -> np.ndarray:
     """
     Make a prediction using the latest trained model

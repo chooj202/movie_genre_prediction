@@ -41,7 +41,7 @@ def image_data(df: pd.DataFrame) -> pd.DataFrame:
     for i in tqdm(range(df.shape[0])):
         try:
             image_path = f"raw_data/posters/all/{df['imdb_id'][i]}.jpg"
-            input_arr = image_preprocessing(image_path, width, height)
+            input_arr = image_preprocessing(image_path)
             image_array.append([df['imdb_id'][i], input_arr])
         except UnidentifiedImageError as e1:
             unidentified_count += 1
