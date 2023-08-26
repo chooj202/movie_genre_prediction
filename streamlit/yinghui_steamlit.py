@@ -25,7 +25,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.header("Your Poster :camera:")
     uploaded_file = st.file_uploader("Upload image", type=['png', 'jpg'])
-    poster_button = st.button("Run poster analysis")
+    # poster_button = st.button("Run poster analysis")
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
@@ -41,7 +41,7 @@ with col1:
     #     # params = txt
     #     st.write(txt)
 
-    both_button = st.button("Run analysis for both")
+    both_button = st.button("Run Analysis")
 
 
 with col2:
@@ -58,5 +58,5 @@ with col2:
 
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
-        st.write(f"both")
-        st.snow()
+        st.write(f"not horror")
+        st.balloons()
