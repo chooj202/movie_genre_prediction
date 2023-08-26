@@ -36,25 +36,25 @@ with col1:
 
     st.header("Your Sypnosis :scroll:")
     txt = st.text_area("Enter your sypnosis")
-    sypnosis_button = st.button("Run plot analysis")
-    if sypnosis_button:
-        # params = txt
-        st.write(txt)
+    # sypnosis_button = st.button("Run plot analysis")
+    # if sypnosis_button:
+    #     # params = txt
+    #     st.write(txt)
 
     both_button = st.button("Run analysis for both")
 
 
 with col2:
-    if uploaded_file is not None and poster_button:
-        st.header("The Movie Genre is...")
-        st.write(f"{genre_result}")
-        st.balloons()
-    # else:
-    #     st.write("Please upload an image file")
-    if txt is not None and sypnosis_button:
-        st.header("The Movie Genre is...")
-        st.write(f"genre_result from plot")
-        st.balloons()
+    # if uploaded_file is not None and poster_button:
+    #     st.header("The Movie Genre is...")
+    #     st.write(f"{genre_result}")
+    #     st.balloons()
+    # # else:
+    # #     st.write("Please upload an image file")
+    # if txt is not None and sypnosis_button:
+    #     st.header("The Movie Genre is...")
+    #     st.write(f"genre_result from plot")
+    #     st.balloons()
 
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
