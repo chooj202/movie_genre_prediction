@@ -227,13 +227,21 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     print(Fore.CYAN + "\nDone tokenizing and encoding plots" + Style.RESET_ALL)
 
     X_train_img = np.array(list(df_train["image_array"].values))
+    print("hello1")
     X_train_text = train_encodings['input_ids']
+    print("hello2")
     y_train = y_train
+    print("hello3")
     X_test_img = np.array(list(df_test["image_array"].values))
+    print("hello4")
     X_test_text = test_encodings['input_ids']
+    print("hello5")
     y_test = y_test
+    print("hello6")
     X_val_img = np.array(list(df_val["image_array"].values))
+    print("hello7")
     X_val_text = val_encodings['input_ids']
+    print("hello8")
     y_val = y_val
 
     print(Fore.CYAN + "\nFinsihed preparing train, test and val datasets" + Style.RESET_ALL)
