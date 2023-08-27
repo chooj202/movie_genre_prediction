@@ -204,7 +204,7 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     """
     print(Fore.MAGENTA + "\n ⭐️ Use case: Preprocess for multmodal" + Style.RESET_ALL)
 
-    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").sample(n=3000, random_state=0, ignore_index=True)
+    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").sample(n=2000, random_state=0, ignore_index=True)
     big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").sample(n=500, random_state=0, ignore_index=True)
     big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").sample(n=500, random_state=0, ignore_index=True)
 
