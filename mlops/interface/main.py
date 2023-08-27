@@ -204,9 +204,9 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     """
     print(Fore.MAGENTA + "\n ⭐️ Use case: Preprocess for multmodal" + Style.RESET_ALL)
 
-    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").head(200)
-    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").head(100)
-    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").head(100)
+    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").head(4000)
+    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").head(1000)
+    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").head(1000)
 
     df_train, X_train_img = get_image_array_multimodal(big_train_df)
     df_test, X_test_img = get_image_array_multimodal(big_test_df)
