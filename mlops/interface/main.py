@@ -204,13 +204,13 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     """
     print(Fore.MAGENTA + "\n ⭐️ Use case: Preprocess for multmodal" + Style.RESET_ALL)
 
-    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").head(8000)
-    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").head(2000)
-    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").head(2000)
+    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").head(200)
+    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").head(100)
+    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").head(100)
 
-    df_train = get_image_array_multimodal(big_train_df)
-    df_test = get_image_array_multimodal(big_test_df)
-    df_val = get_image_array_multimodal(big_val_df)
+    df_train, X_train_img = get_image_array_multimodal(big_train_df)
+    df_test, X_test_img = get_image_array_multimodal(big_test_df)
+    df_val, X_val_img = get_image_array_multimodal(big_val_df)
 
     print(Fore.CYAN + "\nFinished getting all image arrays from local" + Style.RESET_ALL)
 
@@ -225,24 +225,16 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     val_encodings = tokenize_encode_multimodal(df_val)
 
     print(Fore.CYAN + "\nDone tokenizing and encoding plots" + Style.RESET_ALL)
-
-    X_train_img = np.array(list(df_train["image_array"].values))
-    print("hello1")
+    print(len(X_train_img), len(X_test_img), len(X_val_img))
+    # X_train_img = np.array(list(df_train["image_array"].values))
     X_train_text = train_encodings['input_ids']
-    print("hello2")
-    y_train = y_train
-    print("hello3")
-    X_test_img = np.array(list(df_test["image_array"].values))
-    print("hello4")
+    # y_train = y_train
+    # X_test_img = np.array(list(df_test["image_array"].values))
     X_test_text = test_encodings['input_ids']
-    print("hello5")
-    y_test = y_test
-    print("hello6")
-    X_val_img = np.array(list(df_val["image_array"].values))
-    print("hello7")
+    # y_test = y_test
+    # X_val_img = np.array(list(df_val["image_array"].values))
     X_val_text = val_encodings['input_ids']
-    print("hello8")
-    y_val = y_val
+    # y_val = y_val
 
     print(Fore.CYAN + "\nFinsihed preparing train, test and val datasets" + Style.RESET_ALL)
 

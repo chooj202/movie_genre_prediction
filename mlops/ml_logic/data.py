@@ -65,29 +65,28 @@ def image_data(df: pd.DataFrame) -> pd.DataFrame:
 
 def get_image_array_multimodal(df):
     width, height = 256, 256
-    image_array = []
+    image_array = np.zeros((df.shape[0],width, height, 3,), dtype=np.float32)
     unidentified_count = 0
     not_found_count = 0
     print(f"total: {df.shape[0]}")
     for i in tqdm(range(df.shape[0])):
         try:
             folder = df["location"][i]
-            image_path = f"raw_data/large_dataset/{folder}/{df['imdb_id'][i]}.jpg"
+            image_path = f"../raw_data/large_dataset/{folder}/{df['imdb_id'][i]}.jpg"
             img = image.load_img(image_path, target_size=(width, height, 3))
             input_arr = np.asarray(image.img_to_array(img))
-            image_array.append([df['imdb_id'][i], input_arr])
+            image_array[i] = input_arr
         except UnidentifiedImageError as e1:
             unidentified_count += 1
+            df.drop(index=i)
             pass
         except FileNotFoundError as e2:
             not_found_count += 1
+            df.drop(index=i)
             pass
     print(f"{unidentified_count} files were unidentified\n{not_found_count} files were not found")
     print(f"we got {len(image_array)}")
-    img_array_df = pd.DataFrame(image_array, columns=["imdb_id", "image_array"])
-    df = df.merge(img_array_df, on="imdb_id", how="right").drop(columns=["location"])
-    df = df.dropna().reset_index(drop=True)
-    return df
+    return df, image_array
 
 
 def image_preprocessing(image_file_path: str) -> np.ndarray:
