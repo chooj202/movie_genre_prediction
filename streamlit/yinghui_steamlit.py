@@ -34,8 +34,8 @@ with col1:
         files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
 
 
-    st.header("Your Sypnosis :scroll:")
-    txt = st.text_area("Enter your sypnosis")
+    st.header("Your Synopsis :scroll:")
+    txt = st.text_area("Enter your synopsis")
     # sypnosis_button = st.button("Run plot analysis")
     # if sypnosis_button:
     #     # params = txt
