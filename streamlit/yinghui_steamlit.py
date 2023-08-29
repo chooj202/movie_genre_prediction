@@ -60,7 +60,7 @@ with col2:
         st.header("The Movie Genre is...")
         response = requests.post(api_url, params={"sypnosis":txt}, files=files)
         genre_result = response.json()["prediction"]
-        output = ' '.join(genre_result)
+        output = ', '.join(genre_result)
         if 'Romance' in genre_result:
             output += ':heart:'
         st.write(output)
