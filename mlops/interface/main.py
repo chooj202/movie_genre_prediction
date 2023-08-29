@@ -5,10 +5,27 @@ from pathlib import Path
 from colorama import Fore, Style
 from sklearn.model_selection import train_test_split
 
-from mlops.ml_logic.data import image_preprocessing, get_data_with_cache, clean_data, image_data, load_data_to_bq
+from mlops.ml_logic.data import (
+    image_preprocessing,
+    get_data_with_cache,
+    clean_data,
+    image_data,
+    load_data_to_bq,
+    get_image_array_multimodal,
+    preprocess_genre_multimodal,
+    tokenize_encode_multimodal,
+    image_preprocessing_multimodal,
+    text_preprocessing_multimodal
+)
 from mlops.ml_logic.preprocessor import binarize_genres
 from mlops.ml_logic.registry import load_model, save_results, save_model
-from mlops.ml_logic.model import initialize_model, compile_model, train_model
+from mlops.ml_logic.model import (
+    initialize_model,
+    compile_model,
+    train_model,
+    initialize_compile_multimodal,
+    fit_multimodal
+    )
 from mlops.params import *
 
 from tensorflow import keras
@@ -125,6 +142,7 @@ def train(
 
     return accuracy
 
+
 def pred(file_path: str = None) -> np.ndarray:
     """
     Make a prediction using the latest trained model
@@ -154,6 +172,7 @@ def pred(file_path: str = None) -> np.ndarray:
 
     return prediction
 
+
 def fast_pred(model: keras.Model, file_path: str) -> np.ndarray:
     """
     Pred but takes a model as input (We could pre-load the model and just call fast_prec)
@@ -179,6 +198,99 @@ def fast_pred(model: keras.Model, file_path: str) -> np.ndarray:
     print(Fore.BLUE + f"\nThe model predicts {prediction}" +  Style.RESET_ALL)
 
     return prediction
+
+
+def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray):
+    """
+    Preprocess raw data from local data for multimodal
+    """
+    print(Fore.MAGENTA + "\n ⭐️ Use case: Preprocess for multmodal" + Style.RESET_ALL)
+
+    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").sample(n=400, random_state=0, ignore_index=True)
+    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").sample(n=50, random_state=0, ignore_index=True)
+    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").sample(n=50, random_state=0, ignore_index=True)
+
+    df_train, X_train_img = get_image_array_multimodal(big_train_df)
+    df_test, X_test_img = get_image_array_multimodal(big_test_df)
+    df_val, X_val_img = get_image_array_multimodal(big_val_df)
+
+    print(Fore.CYAN + "\nFinished getting all image arrays from local" + Style.RESET_ALL)
+
+    df_train, y_train = preprocess_genre_multimodal(df_train)
+    df_test, y_test = preprocess_genre_multimodal(df_test)
+    df_val, y_val = preprocess_genre_multimodal(df_val)
+
+    print(Fore.CYAN + "\nPreprocessed genres!" + Style.RESET_ALL)
+
+    train_encodings = tokenize_encode_multimodal(df_train)
+    test_encodings = tokenize_encode_multimodal(df_test)
+    val_encodings = tokenize_encode_multimodal(df_val)
+
+    print(Fore.CYAN + "\nDone tokenizing and encoding plots" + Style.RESET_ALL)
+    print(len(X_train_img), len(X_test_img), len(X_val_img))
+    # X_train_img = np.array(list(df_train["image_array"].values))
+    X_train_text = train_encodings['input_ids']
+    # y_train = y_train
+    # X_test_img = np.array(list(df_test["image_array"].values))
+    X_test_text = test_encodings['input_ids']
+    # y_test = y_test
+    # X_val_img = np.array(list(df_val["image_array"].values))
+    X_val_text = val_encodings['input_ids']
+    # y_val = y_val
+
+    print(Fore.CYAN + "\nFinsihed preparing train, test and val datasets" + Style.RESET_ALL)
+
+    return X_train_img, X_train_text, y_train, X_test_img, X_test_text, y_test, X_val_img, X_val_text, y_val
+
+
+def compile_and_train_multimodal(
+    X_train_img,
+    X_train_text,
+    y_train,
+    X_test_img,
+    X_test_text,
+    y_test,
+    X_val_img,
+    X_val_text,
+    y_val
+    ):
+
+    print(Fore.MAGENTA + "\n ⭐️ Use case: Compile and train multimodal" + Style.RESET_ALL)
+
+    model = initialize_compile_multimodal(y_train.shape[1])
+
+    print(Fore.CYAN + "\nFinsihed building and compling model!" + Style.RESET_ALL)
+
+    model, history = fit_multimodal(model, X_train_img, X_train_text, y_train, X_val_img, X_val_text, y_val)
+
+    print(Fore.CYAN + "\nFinsihed fitting model!" + Style.RESET_ALL)
+
+    save_model(model)
+
+    print(Fore.CYAN + "\nSaved model to GCS!" + Style.RESET_ALL)
+
+    return model, history
+
+
+def multimodal():
+
+    X_train_img, X_train_text, y_train, X_test_img, X_test_text, y_test, X_val_img, X_val_text, y_val = preprocess_multimodal()
+
+    model, history = compile_and_train_multimodal(X_train_img, X_train_text, y_train, X_test_img, X_test_text, y_test, X_val_img, X_val_text, y_val)
+
+def fast_pred_multimodal(model, image_file_path, text, genres, threshold=0.3):
+
+    X_img = image_preprocessing_multimodal(image_file_path)
+    X_text = text_preprocessing_multimodal(text)
+
+    y_pred = model.predict([np.array([X_img]), X_text])
+    print(f"\nPredicting with threshold of {threshold}")
+    pred_genres = []
+    pred = y_pred[0]
+    for i in range(len(pred)):
+        if pred[i] > threshold:
+            pred_genres.append(genres[i])
+    return pred_genres
 
 if __name__ == '__main__':
     preprocess()
