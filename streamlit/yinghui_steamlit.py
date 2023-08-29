@@ -61,8 +61,15 @@ with col2:
         response = requests.post(api_url, params={"sypnosis":txt}, files=files)
         genre_result = response.json()["prediction"]
         if len(genre_result) == 3:
-            st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]}")
+            if genre_result[0] == "Romance" or genre_result[1] == "Romance" or genre_result[2] == "Romance":
+                 st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]} :heart:")
+            else:
+                st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]}")
         else:
-            st.write(f"{genre_result[0]} and {genre_result[1]}")
+            if genre_result[0] == "Romance" or genre_result[1] == "Romance":
+                 st.write(f"{genre_result[0]} and {genre_result[1]} :heart:")
+            else:
+                st.write(f"{genre_result[0]} and {genre_result[1]}")
+
 
         st.balloons()
