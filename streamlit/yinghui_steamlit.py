@@ -62,5 +62,5 @@ with col2:
         response = requests.post(api_url, params={"sypnosis":txt}, files=files)
         genre_result = response.json()["prediction"]
         st.write(genre_result)
-        st.write(genre_result[0])
+        st.write(genre_result[0:])
         st.balloons()
