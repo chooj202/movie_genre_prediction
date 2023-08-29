@@ -60,16 +60,21 @@ with col2:
         st.header("The Movie Genre is...")
         response = requests.post(api_url, params={"sypnosis":txt}, files=files)
         genre_result = response.json()["prediction"]
-        if len(genre_result) == 3:
-            if genre_result[0] == "Romance" or genre_result[1] == "Romance" or genre_result[2] == "Romance":
-                 st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]} :heart:")
-            else:
-                st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]}")
-        else:
-            if genre_result[0] == "Romance" or genre_result[1] == "Romance":
-                 st.write(f"{genre_result[0]} and {genre_result[1]} :heart:")
-            else:
-                st.write(f"{genre_result[0]} and {genre_result[1]}")
+        output = ' '.join(genre_result)
+        if 'Romance' in genre_result:
+            output += ':heart:'
+        st.write(output)
+        # if "Romance" in genre_result:
+        #     if len(genre_result) == 3:
+        #         if genre_result[0] == "Romance" or genre_result[1] == "Romance" or genre_result[2] == "Romance":
+        #             st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]} :heart:")
+        #         else:
+        #             st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]}")
+        #     else:
+        #         if genre_result[0] == "Romance" or genre_result[1] == "Romance":
+        #             st.write(f"{genre_result[0]} and {genre_result[1]} :heart:")
+        #         else:
+        #             st.write(f"{genre_result[0]} and {genre_result[1]}")
 
 
         st.balloons()
