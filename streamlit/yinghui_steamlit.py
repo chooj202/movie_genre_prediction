@@ -58,9 +58,12 @@ with col2:
 
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
-        st.write(f"not horror")
         response = requests.post(api_url, params={"sypnosis":txt}, files=files)
         genre_result = response.json()["prediction"]
         st.write(genre_result)
-        st.write(genre_result[0:])
+        if len(genre_result) == 3:
+            st.write(f"{genre_result[0]}, {genre_result[1]} and {genre_result[2]}")
+        else:
+            st.write(f"{genre_result[0]} and {genre_result[1]}")
+
         st.balloons()
