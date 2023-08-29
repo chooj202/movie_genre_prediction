@@ -15,6 +15,7 @@ import io
 
 
 api_url_image = "https://movie-genre-prediction-osp24vwspq-an.a.run.app/image_predict/"
+api_url = "https://movie-genre-prediction-2-osp24vwspq-an.a.run.app/predict/"
 
 
 st.markdown("""# Movie Genre Predictor :movie_camera:
@@ -29,10 +30,9 @@ with col1:
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image)
-        # image_data = uploaded_file.getvalue()
-        # files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
-        # response = requests.post(api_url_image, files=files)
-        # genre_result = response.json()["prediction"]
+        image_data = uploaded_file.getvalue()
+        files = {'file': ("image.jpg", io.BytesIO(image_data), "image/jpeg")}
+
 
     st.header("Your Sypnosis :scroll:")
     txt = st.text_area("Enter your sypnosis")
@@ -59,4 +59,8 @@ with col2:
     if uploaded_file is not None and txt is not None and both_button :
         st.header("The Movie Genre is...")
         st.write(f"not horror")
+        response = requests.post(api_url, params={"sypnosis":txt}, files=files)
+        genre_result = response.json()["prediction"]
+        st.write(f"genre_result")
+
         st.balloons()
