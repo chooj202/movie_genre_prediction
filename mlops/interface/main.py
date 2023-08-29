@@ -13,7 +13,9 @@ from mlops.ml_logic.data import (
     load_data_to_bq,
     get_image_array_multimodal,
     preprocess_genre_multimodal,
-    tokenize_encode_multimodal
+    tokenize_encode_multimodal,
+    image_preprocessing_multimodal,
+    text_preprocessing_multimodal
 )
 from mlops.ml_logic.preprocessor import binarize_genres
 from mlops.ml_logic.registry import load_model, save_results, save_model
@@ -204,9 +206,9 @@ def preprocess_multimodal() -> (np.ndarray,np.ndarray, np.ndarray, np.ndarray, n
     """
     print(Fore.MAGENTA + "\n ⭐️ Use case: Preprocess for multmodal" + Style.RESET_ALL)
 
-    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").sample(n=2000, random_state=0, ignore_index=True)
-    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").sample(n=500, random_state=0, ignore_index=True)
-    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").sample(n=500, random_state=0, ignore_index=True)
+    big_train_df = pd.read_csv('raw_data/large_dataset/big_data_train.csv').drop(columns = "Unnamed: 0").sample(n=400, random_state=0, ignore_index=True)
+    big_test_df = pd.read_csv('raw_data/large_dataset/big_data_test.csv').drop(columns = "Unnamed: 0").sample(n=50, random_state=0, ignore_index=True)
+    big_val_df = pd.read_csv('raw_data/large_dataset/big_data_val.csv').drop(columns = "Unnamed: 0").sample(n=50, random_state=0, ignore_index=True)
 
     df_train, X_train_img = get_image_array_multimodal(big_train_df)
     df_test, X_test_img = get_image_array_multimodal(big_test_df)
@@ -276,6 +278,19 @@ def multimodal():
 
     model, history = compile_and_train_multimodal(X_train_img, X_train_text, y_train, X_test_img, X_test_text, y_test, X_val_img, X_val_text, y_val)
 
+def fast_pred_multimodal(model, image_file_path, text, genres, threshold=0.3):
+
+    X_img = image_preprocessing_multimodal(image_file_path)
+    X_text = text_preprocessing_multimodal(text)
+
+    y_pred = model.predict([np.array([X_img]), X_text])
+    print(f"\nPredicting with threshold of {threshold}")
+    pred_genres = []
+    pred = y_pred[0]
+    for i in range(len(pred)):
+        if pred[i] > threshold:
+            pred_genres.append(genres[i])
+    return pred_genres
 
 if __name__ == '__main__':
     preprocess()

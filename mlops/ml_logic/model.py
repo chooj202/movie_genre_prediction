@@ -126,7 +126,8 @@ def compile_model(model: Model) -> Model:
     """
     Compile the Neural Network
     """
-    model.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])
+    legacy_adam = tf.keras.optimizers.legacy.Adam()
+    model.compile(optimizer=legacy_adam,loss='binary_crossentropy',metrics=['accuracy'])
 
     print("✅ Model compiled")
 

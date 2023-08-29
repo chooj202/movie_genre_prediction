@@ -10,6 +10,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 from transformers import AutoTokenizer
 from PIL import UnidentifiedImageError
 import ast
+import string
 
 from mlops.params import *
 
@@ -89,6 +90,20 @@ def get_image_array_multimodal(df):
     return df, image_array
 
 
+def image_preprocessing_multimodal(image_file_path: str) -> np.ndarray:
+    width, height = 256, 256
+    try:
+        img = image.load_img(image_file_path, target_size=(width, height, 3))
+        input_arr = np.asarray(image.img_to_array(img))
+    except UnidentifiedImageError as e1:
+        print("error in image preproc")
+        pass
+    except FileNotFoundError as e2:
+        print("error in image preproc")
+        pass
+    return input_arr
+
+
 def image_preprocessing(image_file_path: str) -> np.ndarray:
     """
     Convert a image (from its file path) to a numpy array
@@ -128,6 +143,20 @@ def tokenize_encode_multimodal(df):
     encodings = tokenizer(text, truncation = True, padding = True, max_length = 128, return_tensors = "np")
     return encodings
 
+def text_preprocessing_multimodal(sentence:str) -> np.array:
+    # Basic cleaning
+    sentence = sentence.strip() ## remove whitespaces
+    sentence = sentence.lower() ## lowercase
+    sentence = ''.join(char for char in sentence if not char.isdigit()) ## remove numbers
+
+    # Advanced cleaning
+    for punctuation in string.punctuation:
+        sentence = sentence.replace(punctuation, '') ## remove punctuation
+
+    tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+    encodings = tokenizer(sentence, truncation = True, padding = True, max_length = 128, return_tensors = "np")
+
+    return encodings["input_ids"]
 
 def get_data_with_cache(
         gcp_project:str,
