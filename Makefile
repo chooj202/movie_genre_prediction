@@ -28,6 +28,11 @@ run_api:
 	uvicorn mlops.api.fast:app --reload
 
 
+## ML preprocess multimodal
+run_multimodal:
+		python -c 'from mlops.interface.main import multimodal; multimodal()'
+
+
 ## for all other users
 run_local_dev_api:
 	docker build --tag=${GCR_IMAGE}:dev .
@@ -42,14 +47,14 @@ push_prod_api:
 
 
 ## for m1 users
-run_build_intel_api_from_m1:
+build_intel_api_from_m1:
 	docker build -t ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:intel --platform=linux/amd64 .
 
 push_intel_api_from_m1:
 	docker push ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:intel
 
 deploy_intel_api_from_m1:
-	gcloud run deploy --image ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:intel --memory ${GCR_MEMORY} --region ${GCP_REGION} --env-vars-file .env.yaml
+	gcloud run deploy --image ${GCR_REGION}/${GCP_PROJECT}/${GCR_IMAGE}:intel --cpu ${GCR_CPU} --memory ${GCR_MEMORY} --region ${GCP_REGION} --env-vars-file .env.yaml
 
 
 ## streamlit
